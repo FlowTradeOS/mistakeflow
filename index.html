@@ -9,55 +9,47 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root { --gold: #F5A623; --bg: #FFFFFF; --surface: #F5F5F7; --text: #1D1D1F; --muted: #86868B; --border: rgba(0,0,0,0.1); }
   body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 14px 20px; }
-  .ft-lbl { font-size: 9px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 5px; }
+  .ft-lbl { font-size: 11px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
   .ft-main { display: flex; gap: 10px; align-items: stretch; }
 
   /* LEFT */
   .ft-left { display: flex; flex-direction: column; flex-shrink: 0; }
-  .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-  .bw { display: flex; flex-direction: column; align-items: stretch; gap: 1px; }
-  .btn { padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 10px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all 0.2s; text-align: center; }
+  .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+  .bw { display: flex; flex-direction: column; align-items: stretch; gap: 2px; }
+  .btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all 0.2s; text-align: center; }
   .btn:hover { background: var(--surface); }
   .btn.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 500; }
-  .bcnt { font-size: 8px; color: var(--muted); min-height: 8px; line-height: 1; text-align: center; }
+  .bcnt { font-size: 10px; color: var(--muted); min-height: 10px; line-height: 1; text-align: center; }
 
   /* MIDDLE */
-  .ft-mid { flex: 1; background: var(--surface); border-radius: 12px; padding: 8px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 3px; }
-  .bar-row { display: flex; align-items: center; gap: 6px; }
-  .bar-name { font-size: 9px; color: var(--muted); width: 70px; flex-shrink: 0; }
-  .bar-track { flex: 1; height: 3px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+  .ft-mid { flex: 1; background: var(--surface); border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; }
+  .bar-name { font-size: 11px; color: var(--muted); width: 80px; flex-shrink: 0; }
+  .bar-track { flex: 1; height: 4px; background: var(--bg); border-radius: 4px; overflow: hidden; }
   .bar-fill { height: 100%; border-radius: 4px; background: var(--gold); transition: width 0.4s; }
-  .bar-cnt { font-size: 9px; color: var(--muted); width: 14px; text-align: right; flex-shrink: 0; }
+  .bar-cnt { font-size: 11px; color: var(--muted); width: 16px; text-align: right; flex-shrink: 0; }
 
   /* RIGHT */
-  .ft-right { display: flex; flex-direction: column; gap: 4px; flex-shrink: 0; width: 120px; }
-  .month-card { background: var(--gold); border-radius: 12px; padding: 5px 10px; }
-  .month-val { font-size: 13px; font-weight: 600; color: #fff; line-height: 1; }
-  .month-lbl { font-size: 7px; color: rgba(255,255,255,0.75); margin-top: 1px; }
-  .stat-card { background: var(--surface); border-radius: 12px; padding: 5px 10px; flex: 1; }
-  .stat-val { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1; }
-  .stat-lbl { font-size: 7px; color: var(--muted); margin-top: 1px; }
-  .last-month-card { display: none; background: var(--surface); border-left: 2px solid var(--gold); border-radius: 12px; padding: 5px 10px; }
+  .ft-right { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; width: 130px; }
+  .month-card { background: var(--gold); border-radius: 12px; padding: 7px 12px; }
+  .month-val { font-size: 15px; font-weight: 600; color: #fff; line-height: 1; }
+  .month-lbl { font-size: 9px; color: rgba(255,255,255,0.75); margin-top: 2px; }
+  .stat-card { background: var(--surface); border-radius: 12px; padding: 7px 12px; flex: 1; }
+  .stat-val { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1; }
+  .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 2px; }
+  .last-month-card { display: none; background: var(--surface); border-left: 2px solid var(--gold); border-radius: 12px; padding: 7px 12px; }
   .last-month-card.show { display: block; }
-  .lm-val { font-size: 10px; font-weight: 600; color: var(--gold); line-height: 1.2; }
-  .lm-lbl { font-size: 7px; color: var(--muted); margin-top: 1px; }
+  .lm-val { font-size: 12px; font-weight: 600; color: var(--gold); line-height: 1.2; }
+  .lm-lbl { font-size: 9px; color: var(--muted); margin-top: 2px; }
   .reset-wrap { position: relative; }
-  .reset-btn { padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 9px; font-family: inherit; cursor: pointer; transition: all 0.15s; width: 100%; }
+  .reset-btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; transition: all 0.15s; width: 100%; }
   .reset-btn:hover { border-color: #FF3B30; color: #FF3B30; }
-  .reset-confirm { display: none; position: absolute; right: 0; top: 22px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; z-index: 10; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
+  .reset-confirm { display: none; position: absolute; right: 0; top: 28px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; z-index: 10; white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.12); }
   .reset-confirm.show { display: block; }
-  .reset-confirm p { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
-  .rc-btns { display: flex; gap: 5px; }
-  .rc-cancel { padding: 3px 8px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 9px; font-family: inherit; cursor: pointer; }
-  .rc-ok { padding: 3px 8px; border-radius: 20px; border: none; background: #FF3B30; color: #fff; font-size: 9px; font-family: inherit; cursor: pointer; font-weight: 500; }
-
-  /* BOTTOM */
-  .ft-divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; }
-  .tips { display: flex; gap: 8px; }
-  .tip { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 6px 10px; }
-  .tip-name { font-size: 10px; font-weight: 600; color: var(--gold); margin-bottom: 2px; }
-  .tip-text { font-size: 10px; color: var(--muted); line-height: 1.4; }
-  .empty { font-size: 10px; color: var(--muted); }
+  .reset-confirm p { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .rc-btns { display: flex; gap: 6px; }
+  .rc-cancel { padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; }
+  .rc-ok { padding: 4px 10px; border-radius: 20px; border: none; background: #FF3B30; color: #fff; font-size: 11px; font-family: inherit; cursor: pointer; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -80,7 +72,7 @@
       <div class="stat-lbl">Total logged</div>
     </div>
     <div class="stat-card">
-      <div class="stat-val" id="v-top" style="font-size:10px;padding-top:1px;">—</div>
+      <div class="stat-val" id="v-top" style="font-size:12px;padding-top:1px;">—</div>
       <div class="stat-lbl">Most common (30d)</div>
     </div>
     <div class="last-month-card" id="lm-card">
@@ -100,19 +92,16 @@
   </div>
 </div>
 
-<div class="ft-divider"></div>
-<div class="tips" id="tips"></div>
-
 <script>
 const M=[
-  {id:'no_plan',label:'No plan',tip:'No plan = no trade. Spend 10 min before each session writing your scenario.'},
-  {id:'revenge_trade',label:'Revenge trade',tip:'After a loss, step away 30 min. Log the trade and return with a clear head.'},
-  {id:'overtrading',label:'Overtrading',tip:'Set a max number of trades per day. Once you hit the limit, close the platform.'},
-  {id:'moved_sl',label:'Moved SL',tip:'Write your SL before entry and never adjust it once the trade is live.'},
-  {id:'oversize',label:'Oversize',tip:'Use fixed risk % per trade. Calculate lot size before every entry.'},
-  {id:'fomo',label:'FOMO',tip:'If you missed the entry, skip it. The next setup is coming — patience is an edge.'},
-  {id:'early_exit',label:'Early exit',tip:'Define your TP before entry and trust the plan. Close the chart if needed.'},
-  {id:'late_entry',label:'Late entry',tip:'Set entry alerts before the session. If the setup passed, skip it.'},
+  {id:'no_plan',label:'No plan'},
+  {id:'revenge_trade',label:'Revenge trade'},
+  {id:'overtrading',label:'Overtrading'},
+  {id:'moved_sl',label:'Moved SL'},
+  {id:'oversize',label:'Oversize'},
+  {id:'fomo',label:'FOMO'},
+  {id:'early_exit',label:'Early exit'},
+  {id:'late_entry',label:'Late entry'},
 ];
 const KEY='ft_mistakes_final';
 const now=new Date();
@@ -167,16 +156,11 @@ function render(){
   document.getElementById('v-top').textContent=top30m?top30m.label:'—';
 
   const max=top30?top30[1]:1;
-  document.getElementById('bars').innerHTML='<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:3px;">'+sorted30.map(([id,c])=>{
+  document.getElementById('bars').innerHTML='<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:4px;">'+sorted30.map(([id,c])=>{
     const m=M.find(x=>x.id===id);if(!m)return'';
     const pct=max>0?Math.round(c/max*100):0;
     return`<div class="bar-row"><span class="bar-name">${m.label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-cnt">${c}</span></div>`;
   }).join('')+'</div>';
-
-  const top3=sorted30.filter(([id,c])=>c>=2&&M.find(m=>m.id===id)).slice(0,3);
-  document.getElementById('tips').innerHTML=top3.length
-    ?top3.map(([id])=>{const m=M.find(x=>x.id===id);if(!m)return'';return`<div class="tip"><div class="tip-name">${m.label}</div><div class="tip-text">${m.tip}</div></div>`;}).join('')
-    :'<p class="empty">Log a mistake at least twice to see tips.</p>';
 
   const lmTop=getLastMonthTop();
   const lmCard=document.getElementById('lm-card');
