@@ -214,8 +214,8 @@ function render(){
 }
 
 // Settings
-document.getElementById('settings-btn').onclick=(e)=>{e.stopPropagation();document.getElementById('settings-menu').classList.toggle('show');document.getElementById('reset-confirm').classList.remove('show');};
-document.addEventListener('click',()=>{document.getElementById('settings-menu').classList.remove('show');document.getElementById('reset-confirm').classList.remove('show');});
+document.getElementById('settings-btn').onclick=(e)=>{e.stopPropagation();document.getElementById('settings-menu').classList.toggle('show');hideResetConfirm();};
+document.addEventListener('click',()=>{document.getElementById('settings-menu').classList.remove('show');hideResetConfirm();});
 document.getElementById('settings-menu').addEventListener('click',(e)=>e.stopPropagation());
 
 // Export
@@ -243,9 +243,25 @@ document.getElementById('import-input').onchange=(e)=>{
 };
 
 // Reset — inline, no browser popup
-document.getElementById('reset-btn').onclick=(e)=>{e.stopPropagation();document.getElementById('reset-confirm').classList.toggle('show');};
-document.getElementById('rc-cancel').onclick=(e)=>{e.stopPropagation();document.getElementById('reset-confirm').classList.remove('show');};
-document.getElementById('rc-ok').onclick=(e)=>{e.stopPropagation();localStorage.removeItem(KEY);document.getElementById('settings-menu').classList.remove('show');document.getElementById('reset-confirm').classList.remove('show');render();};
+function showResetConfirm(){
+  document.getElementById('reset-confirm').classList.add('show');
+  document.getElementById('export-btn').style.display='none';
+  document.getElementById('import-btn').style.display='none';
+  document.querySelector('.menu-note').style.display='none';
+  document.querySelector('.menu-divider').style.display='none';
+  document.getElementById('reset-btn').style.display='none';
+}
+function hideResetConfirm(){
+  document.getElementById('reset-confirm').classList.remove('show');
+  document.getElementById('export-btn').style.display='';
+  document.getElementById('import-btn').style.display='';
+  document.querySelector('.menu-note').style.display='';
+  document.querySelector('.menu-divider').style.display='';
+  document.getElementById('reset-btn').style.display='';
+}
+document.getElementById('reset-btn').onclick=(e)=>{e.stopPropagation();showResetConfirm();};
+document.getElementById('rc-cancel').onclick=(e)=>{e.stopPropagation();hideResetConfirm();};
+document.getElementById('rc-ok').onclick=(e)=>{e.stopPropagation();localStorage.removeItem(KEY);document.getElementById('settings-menu').classList.remove('show');hideResetConfirm();render();};
 
 render();
 </script>
