@@ -37,21 +37,26 @@
   .stat-card { background: var(--surface); border-radius: 12px; padding: 7px 12px; flex: 1; }
   .stat-val { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1; }
   .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 2px; }
-
-  /* stat-card cu accent pentru last month */
   .stat-card.last-month { border-left: 2px solid var(--gold); }
   .stat-card.last-month .stat-val { font-size: 12px; color: var(--gold); padding-top: 1px; }
 
-  /* Reset — confirmarea apare IN SUS */
-  .reset-wrap { position: relative; }
-  .reset-btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; transition: all 0.15s; width: 100%; }
-  .reset-btn:hover { border-color: #FF3B30; color: #FF3B30; }
-  .reset-confirm { display: none; position: absolute; right: 0; bottom: 32px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; z-index: 10; white-space: nowrap; box-shadow: 0 -4px 12px rgba(0,0,0,0.12); }
-  .reset-confirm.show { display: block; }
-  .reset-confirm p { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
-  .rc-btns { display: flex; gap: 6px; }
-  .rc-cancel { padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; }
-  .rc-ok { padding: 4px 10px; border-radius: 20px; border: none; background: #FF3B30; color: #fff; font-size: 11px; font-family: inherit; cursor: pointer; font-weight: 500; }
+  /* Settings */
+  .settings-wrap { position: relative; }
+  .settings-btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; transition: all 0.15s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .settings-btn:hover { background: var(--surface); }
+  .settings-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .settings-menu { display: none; position: absolute; bottom: 32px; right: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 6px; z-index: 10; white-space: nowrap; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); min-width: 150px; }
+  .settings-menu.show { display: block; }
+  .menu-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; font-size: 12px; color: var(--text); cursor: pointer; transition: background 0.15s; border: none; background: transparent; width: 100%; font-family: inherit; text-align: left; }
+  .menu-item:hover { background: var(--surface); }
+  .menu-item svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--muted); }
+  .menu-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+  .menu-item.danger { color: #FF3B30; }
+  .menu-item.danger svg { color: #FF3B30; }
+  .menu-note { font-size: 10px; color: var(--muted); padding: 4px 10px 6px; line-height: 1.4; }
+
+  /* Import hidden input */
+  #import-input { display: none; }
 </style>
 </head>
 <body>
@@ -67,29 +72,42 @@
   <div class="ft-right">
     <div class="month-card">
       <div class="month-val" id="v-month">—</div>
-      <div class="month-lbl">Current period</div>
+      <div class="month-lbl">Current month</div>
     </div>
     <div class="stat-card">
       <div class="stat-val" id="v-total">0</div>
-      <div class="stat-lbl">Total logged</div>
+      <div class="stat-lbl">This month</div>
     </div>
-    <!-- Acest card schimba continutul dinamic: Most common SAU Last month #1 -->
     <div class="stat-card" id="dynamic-card">
       <div class="stat-val" id="v-dynamic" style="font-size:12px;padding-top:1px;">—</div>
-      <div class="stat-lbl" id="v-dynamic-lbl">Most common (30d)</div>
+      <div class="stat-lbl" id="v-dynamic-lbl">Most common</div>
     </div>
-    <div class="reset-wrap">
-      <button class="reset-btn" id="reset-btn">Reset</button>
-      <div class="reset-confirm" id="reset-confirm">
-        <p>Reset all data?</p>
-        <div class="rc-btns">
-          <button class="rc-cancel" id="rc-cancel">Cancel</button>
-          <button class="rc-ok" id="rc-ok">Reset</button>
-        </div>
+    <div class="settings-wrap">
+      <button class="settings-btn" id="settings-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+      <div class="settings-menu" id="settings-menu">
+        <button class="menu-item" id="export-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export data
+        </button>
+        <button class="menu-item" id="import-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          Import data
+        </button>
+        <p class="menu-note">Use Export to back up or transfer your data to another device.</p>
+        <div class="menu-divider"></div>
+        <button class="menu-item danger" id="reset-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Reset all data
+        </button>
       </div>
     </div>
   </div>
 </div>
+
+<input type="file" id="import-input" accept=".json">
 
 <script>
 const M=[
@@ -113,16 +131,14 @@ function sanitize(data){const v=new Set(M.map(m=>m.id));return data.map(e=>({...
 function getTodayMistakes(){const e=load().find(x=>x.date===today);return e?e.mistakes.filter(id=>M.find(m=>m.id===id)):[];}
 function addMistake(id){const data=load();const e=data.find(x=>x.date===today);if(e){e.mistakes.push(id);}else data.push({date:today,mistakes:[id]});save(data);}
 function removeMistake(id){const data=load();const e=data.find(x=>x.date===today);if(!e)return;const idx=e.mistakes.lastIndexOf(id);if(idx>-1)e.mistakes.splice(idx,1);if(!e.mistakes.length)data.splice(data.indexOf(e),1);save(data);}
-function getLast30(){const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);return sanitize(load().filter(e=>new Date(e.date)>=cutoff));}
 
-function getMostCommon30(){
-  const data30=getLast30();
-  const counts30={};M.forEach(m=>counts30[m.id]=0);
-  data30.forEach(e=>e.mistakes.forEach(id=>{counts30[id]=(counts30[id]||0)+1;}));
-  const sorted=Object.entries(counts30).sort((a,b)=>b[1]-a[1]);
-  return sorted[0]&&sorted[0][1]>=2?M.find(m=>m.id===sorted[0][0])||null:null;
+// Luna curenta
+function getCurrentMonthData(){
+  const m=now.getMonth(), y=now.getFullYear();
+  return sanitize(load()).filter(e=>{const d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y;});
 }
 
+// Luna precedenta
 function getLastMonthTop(){
   const lm=now.getMonth()===0?11:now.getMonth()-1;
   const ly=now.getMonth()===0?now.getFullYear()-1:now.getFullYear();
@@ -134,18 +150,28 @@ function getLastMonthTop(){
   return sorted[0]&&sorted[0][1]>0?M.find(m=>m.id===sorted[0][0])||null:null;
 }
 
+function getMostCommonCurrentMonth(){
+  const dataMonth=getCurrentMonthData();
+  const counts={};M.forEach(m=>counts[m.id]=0);
+  dataMonth.forEach(e=>e.mistakes.forEach(id=>{counts[id]=(counts[id]||0)+1;}));
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  return sorted[0]&&sorted[0][1]>=2?M.find(m=>m.id===sorted[0][0])||null:null;
+}
+
 function render(){
   const data=sanitize(load());
   const todayMistakes=getTodayMistakes();
-  const countsAll={};M.forEach(m=>countsAll[m.id]=0);
-  let total=0;
-  data.forEach(e=>e.mistakes.forEach(id=>{countsAll[id]=(countsAll[id]||0)+1;total++;}));
+  const dataMonth=getCurrentMonthData();
 
-  // Frequency bars — last 30d
-  const data30=getLast30();
-  const counts30={};M.forEach(m=>counts30[m.id]=0);
-  data30.forEach(e=>e.mistakes.forEach(id=>{counts30[id]=(counts30[id]||0)+1;}));
-  const sorted30=Object.entries(counts30).sort((a,b)=>b[1]-a[1]);
+  // Counts all time per button
+  const countsAll={};M.forEach(m=>countsAll[m.id]=0);
+  data.forEach(e=>e.mistakes.forEach(id=>{countsAll[id]=(countsAll[id]||0)+1;}));
+
+  // Counts current month for bars
+  const countsMonth={};M.forEach(m=>countsMonth[m.id]=0);
+  dataMonth.forEach(e=>e.mistakes.forEach(id=>{countsMonth[id]=(countsMonth[id]||0)+1;}));
+  let totalMonth=0;
+  dataMonth.forEach(e=>totalMonth+=e.mistakes.length);
 
   // Buttons
   const wrap=document.getElementById('btns');
@@ -162,10 +188,11 @@ function render(){
     w.appendChild(b);w.appendChild(c);wrap.appendChild(w);
   });
 
+  // Month + total this month
   document.getElementById('v-month').textContent=MONTHS[now.getMonth()];
-  document.getElementById('v-total').textContent=total;
+  document.getElementById('v-total').textContent=totalMonth;
 
-  // Dynamic card: zilele 1-3 = Last month, din ziua 4 = Most common
+  // Dynamic card: days 1-3 = last month, rest = most common current month
   const dynamicCard=document.getElementById('dynamic-card');
   const dynamicVal=document.getElementById('v-dynamic');
   const dynamicLbl=document.getElementById('v-dynamic-lbl');
@@ -173,31 +200,81 @@ function render(){
   const lmTop=getLastMonthTop();
 
   if(isFirstDays&&lmTop){
-    // Arata Last month #1
     const lmName=MONTHS[now.getMonth()===0?11:now.getMonth()-1];
     dynamicVal.textContent=lmTop.label;
     dynamicLbl.textContent=`${lmName}'s #1 mistake`;
     dynamicCard.classList.add('last-month');
   } else {
-    // Arata Most common 30d (calculul continua mereu)
-    const mc=getMostCommon30();
+    const mc=getMostCommonCurrentMonth();
     dynamicVal.textContent=mc?mc.label:'—';
-    dynamicLbl.textContent='Most common (30d)';
+    dynamicLbl.textContent='Most common';
     dynamicCard.classList.remove('last-month');
   }
 
-  // Frequency bars
-  const max=sorted30[0]?sorted30[0][1]:1;
-  document.getElementById('bars').innerHTML='<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:4px;">'+sorted30.map(([id,c])=>{
+  // Frequency bars — current month
+  const sorted=Object.entries(countsMonth).sort((a,b)=>b[1]-a[1]);
+  const max=sorted[0]?sorted[0][1]:1;
+  document.getElementById('bars').innerHTML='<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:4px;">'+sorted.map(([id,c])=>{
     const m=M.find(x=>x.id===id);if(!m)return'';
     const pct=max>0?Math.round(c/max*100):0;
     return`<div class="bar-row"><span class="bar-name">${m.label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-cnt">${c}</span></div>`;
   }).join('')+'</div>';
 }
 
-document.getElementById('reset-btn').onclick=()=>document.getElementById('reset-confirm').classList.toggle('show');
-document.getElementById('rc-cancel').onclick=()=>document.getElementById('reset-confirm').classList.remove('show');
-document.getElementById('rc-ok').onclick=()=>{localStorage.removeItem(KEY);document.getElementById('reset-confirm').classList.remove('show');render();};
+// Settings menu
+document.getElementById('settings-btn').onclick=(e)=>{e.stopPropagation();document.getElementById('settings-menu').classList.toggle('show');};
+document.addEventListener('click',()=>document.getElementById('settings-menu').classList.remove('show'));
+
+// Export
+document.getElementById('export-btn').onclick=()=>{
+  const data=load();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`mistakes-backup-${today}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('settings-menu').classList.remove('show');
+};
+
+// Import
+document.getElementById('import-btn').onclick=()=>{
+  document.getElementById('import-input').click();
+  document.getElementById('settings-menu').classList.remove('show');
+};
+document.getElementById('import-input').onchange=(e)=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(ev)=>{
+    try{
+      const imported=JSON.parse(ev.target.result);
+      if(Array.isArray(imported)){
+        save(imported);
+        render();
+        alert('Data imported successfully!');
+      } else {
+        alert('Invalid file format.');
+      }
+    } catch(err){
+      alert('Could not read file.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value='';
+};
+
+// Reset
+document.getElementById('reset-btn').onclick=(e)=>{
+  e.stopPropagation();
+  if(confirm('Reset all data? This cannot be undone.')){
+    localStorage.removeItem(KEY);
+    document.getElementById('settings-menu').classList.remove('show');
+    render();
+  }
+};
+
 render();
 </script>
 </body>
