@@ -89,16 +89,7 @@
         Settings
       </button>
       <div class="settings-menu" id="settings-menu">
-        <button class="menu-item" id="export-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Export data
-        </button>
-        <button class="menu-item" id="import-btn">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-          Import data
-        </button>
-        <p class="menu-note">Use Export to back up or transfer your data to another device.</p>
-        <div class="menu-divider"></div>
+
         <button class="menu-item danger" id="reset-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           Reset all data
@@ -116,7 +107,6 @@
   </div>
 </div>
 
-<input type="file" id="import-input" accept=".json">
 
 <script>
 const M=[
@@ -218,45 +208,13 @@ document.getElementById('settings-btn').onclick=(e)=>{e.stopPropagation();docume
 document.addEventListener('click',()=>{document.getElementById('settings-menu').classList.remove('show');hideResetConfirm();});
 document.getElementById('settings-menu').addEventListener('click',(e)=>e.stopPropagation());
 
-// Export
-document.getElementById('export-btn').onclick=()=>{
-  const blob=new Blob([JSON.stringify(load(),null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download=`mistakes-backup-${today}.json`;a.click();
-  URL.revokeObjectURL(url);
-  document.getElementById('settings-menu').classList.remove('show');
-};
-
-// Import
-document.getElementById('import-btn').onclick=()=>{document.getElementById('import-input').click();document.getElementById('settings-menu').classList.remove('show');};
-document.getElementById('import-input').onchange=(e)=>{
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=(ev)=>{
-    try{
-      const imported=JSON.parse(ev.target.result);
-      if(Array.isArray(imported)){save(imported);render();}
-      else{alert('Invalid file format.');}
-    }catch(err){alert('Could not read file.');}
-  };
-  reader.readAsText(file);e.target.value='';
-};
-
 // Reset — inline, no browser popup
 function showResetConfirm(){
   document.getElementById('reset-confirm').classList.add('show');
-  document.getElementById('export-btn').style.display='none';
-  document.getElementById('import-btn').style.display='none';
-  document.querySelector('.menu-note').style.display='none';
-  document.querySelector('.menu-divider').style.display='none';
   document.getElementById('reset-btn').style.display='none';
 }
 function hideResetConfirm(){
   document.getElementById('reset-confirm').classList.remove('show');
-  document.getElementById('export-btn').style.display='';
-  document.getElementById('import-btn').style.display='';
-  document.querySelector('.menu-note').style.display='';
-  document.querySelector('.menu-divider').style.display='';
   document.getElementById('reset-btn').style.display='';
 }
 document.getElementById('reset-btn').onclick=(e)=>{e.stopPropagation();showResetConfirm();};
