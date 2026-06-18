@@ -13,11 +13,14 @@
   .ft-main { display: flex; gap: 10px; align-items: stretch; }
   .ft-left { display: flex; flex-direction: column; flex-shrink: 0; }
   .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-  .bw { display: flex; flex-direction: column; align-items: stretch; gap: 2px; }
-  .btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: all 0.2s; text-align: center; }
+  .bw { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-family: inherit; cursor: pointer; white-space: nowrap; transition: background 0.15s, border-color 0.15s, color 0.15s; text-align: center; width: 100%; }
   .btn:hover { background: var(--surface); }
-  .btn.active { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 500; }
-  .bcnt { font-size: 10px; color: var(--muted); min-height: 10px; line-height: 1; text-align: center; }
+  .btn.flash { background: var(--gold); border-color: var(--gold); color: #fff; font-weight: 500; }
+  .counter-row { height: 16px; display: flex; align-items: center; justify-content: center; gap: 3px; }
+  .counter-num { font-size: 10px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .counter-x { width: 13px; height: 13px; border-radius: 50%; border: none; background: rgba(245,166,35,0.15); color: var(--gold); font-size: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s; }
+  .counter-x:hover { background: rgba(245,166,35,0.3); }
   .ft-mid { flex: 1; background: var(--surface); border-radius: 12px; padding: 10px 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 4px; }
   .bar-row { display: flex; align-items: center; gap: 8px; }
   .bar-name { font-size: 11px; color: var(--muted); width: 80px; flex-shrink: 0; }
@@ -33,31 +36,23 @@
   .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 2px; }
   .stat-card.last-month { border-left: 2px solid var(--gold); }
   .stat-card.last-month .stat-val { font-size: 12px; color: var(--gold); padding-top: 1px; }
-
-  /* Settings */
   .settings-wrap { position: relative; }
   .settings-btn { padding: 5px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 11px; font-family: inherit; cursor: pointer; transition: all 0.15s; width: 100%; display: flex; align-items: center; justify-content: center; gap: 5px; }
   .settings-btn:hover { background: var(--surface); }
-  .settings-btn svg { width: 12px; height: 12px; flex-shrink: 0; }
+  .settings-btn svg { width: 12px; height: 12px; }
   .settings-menu { display: none; position: absolute; bottom: 32px; right: 0; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 6px; z-index: 10; white-space: nowrap; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); min-width: 150px; }
   .settings-menu.show { display: block; }
-  .menu-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; font-size: 12px; color: var(--text); cursor: pointer; transition: background 0.15s; border: none; background: transparent; width: 100%; font-family: inherit; text-align: left; }
+  .menu-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; font-size: 12px; color: var(--text); cursor: pointer; border: none; background: transparent; width: 100%; font-family: inherit; }
   .menu-item:hover { background: var(--surface); }
-  .menu-item svg { width: 14px; height: 14px; flex-shrink: 0; color: var(--muted); }
-  .menu-divider { border: none; border-top: 1px solid var(--border); margin: 4px 0; }
+  .menu-item svg { width: 14px; height: 14px; color: var(--muted); }
   .menu-item.danger { color: #FF3B30; }
   .menu-item.danger svg { color: #FF3B30; }
-  .menu-note { font-size: 10px; color: var(--muted); padding: 4px 10px 6px; line-height: 1.4; }
-
-  /* Reset inline confirm */
   .reset-confirm-inline { display: none; padding: 8px 10px; }
   .reset-confirm-inline.show { display: block; }
   .reset-confirm-inline p { font-size: 11px; color: var(--muted); margin-bottom: 7px; }
   .rc-btns { display: flex; gap: 6px; }
   .rc-cancel { padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border); background: transparent; color: var(--muted); font-size: 10px; font-family: inherit; cursor: pointer; }
   .rc-ok { padding: 4px 10px; border-radius: 20px; border: none; background: #FF3B30; color: #fff; font-size: 10px; font-family: inherit; cursor: pointer; font-weight: 500; }
-
-  #import-input { display: none; }
 </style>
 </head>
 <body>
@@ -67,9 +62,7 @@
     <div class="ft-lbl">Today's mistakes</div>
     <div class="btn-grid" id="btns"></div>
   </div>
-
   <div class="ft-mid" id="bars"></div>
-
   <div class="ft-right">
     <div class="month-card">
       <div class="month-val" id="v-month">—</div>
@@ -89,12 +82,10 @@
         Settings
       </button>
       <div class="settings-menu" id="settings-menu">
-
         <button class="menu-item danger" id="reset-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
           Reset all data
         </button>
-        <!-- Inline confirm — no browser popup -->
         <div class="reset-confirm-inline" id="reset-confirm">
           <p>Are you sure? This cannot be undone.</p>
           <div class="rc-btns">
@@ -106,7 +97,6 @@
     </div>
   </div>
 </div>
-
 
 <script>
 const M=[
@@ -123,18 +113,14 @@ const KEY='ft_mistakes_final';
 const now=new Date();
 const today=now.toISOString().split('T')[0];
 const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return[];}}
 function save(d){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
 function sanitize(data){const v=new Set(M.map(m=>m.id));return data.map(e=>({...e,mistakes:e.mistakes.filter(id=>v.has(id))})).filter(e=>e.mistakes.length>0);}
-function getTodayMistakes(){const e=load().find(x=>x.date===today);return e?e.mistakes.filter(id=>M.find(m=>m.id===id)):[];}
+function getTodayCount(id){const e=load().find(x=>x.date===today);return e?e.mistakes.filter(x=>x===id).length:0;}
 function addMistake(id){const data=load();const e=data.find(x=>x.date===today);if(e){e.mistakes.push(id);}else data.push({date:today,mistakes:[id]});save(data);}
 function removeMistake(id){const data=load();const e=data.find(x=>x.date===today);if(!e)return;const idx=e.mistakes.lastIndexOf(id);if(idx>-1)e.mistakes.splice(idx,1);if(!e.mistakes.length)data.splice(data.indexOf(e),1);save(data);}
-
-function getCurrentMonthData(){
-  const m=now.getMonth(),y=now.getFullYear();
-  return sanitize(load()).filter(e=>{const d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y;});
-}
+function flashBtn(btn){btn.classList.add('flash');setTimeout(()=>btn.classList.remove('flash'),500);}
+function getCurrentMonthData(){const m=now.getMonth(),y=now.getFullYear();return sanitize(load()).filter(e=>{const d=new Date(e.date);return d.getMonth()===m&&d.getFullYear()===y;});}
 function getLastMonthTop(){
   const lm=now.getMonth()===0?11:now.getMonth()-1;
   const ly=now.getMonth()===0?now.getFullYear()-1:now.getFullYear();
@@ -145,16 +131,14 @@ function getLastMonthTop(){
   const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   return sorted[0]&&sorted[0][1]>0?M.find(m=>m.id===sorted[0][0])||null:null;
 }
-function getMostCommonCurrentMonth(){
+function getMostCommon(){
   const counts={};M.forEach(m=>counts[m.id]=0);
   getCurrentMonthData().forEach(e=>e.mistakes.forEach(id=>{counts[id]=(counts[id]||0)+1;}));
   const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
   return sorted[0]&&sorted[0][1]>=2?M.find(m=>m.id===sorted[0][0])||null:null;
 }
-
 function render(){
   const data=sanitize(load());
-  const todayMistakes=getTodayMistakes();
   const dataMonth=getCurrentMonthData();
   const countsAll={};M.forEach(m=>countsAll[m.id]=0);
   data.forEach(e=>e.mistakes.forEach(id=>{countsAll[id]=(countsAll[id]||0)+1;}));
@@ -165,35 +149,36 @@ function render(){
   const wrap=document.getElementById('btns');
   wrap.innerHTML='';
   M.forEach(m=>{
-    const isActive=todayMistakes.includes(m.id);
+    const todayCount=getTodayCount(m.id);
     const w=document.createElement('div');w.className='bw';
     const b=document.createElement('button');
-    b.className='btn'+(isActive?' active':'');
-    b.textContent=m.label;
-    b.onclick=()=>{isActive?removeMistake(m.id):addMistake(m.id);render();};
-    const c=document.createElement('span');c.className='bcnt';
-    c.textContent=countsAll[m.id]>0?countsAll[m.id]:'';
-    w.appendChild(b);w.appendChild(c);wrap.appendChild(w);
+    b.className='btn';b.textContent=m.label;
+    b.onclick=()=>{addMistake(m.id);flashBtn(b);render();};
+    const cr=document.createElement('div');cr.className='counter-row';
+    if(todayCount>0){
+      const num=document.createElement('span');num.className='counter-num';num.textContent=todayCount;
+      const x=document.createElement('button');x.className='counter-x';x.textContent='✕';
+      x.onclick=(e)=>{e.stopPropagation();removeMistake(m.id);render();};
+      cr.appendChild(num);cr.appendChild(x);
+    }
+    w.appendChild(b);w.appendChild(cr);
+    wrap.appendChild(w);
   });
 
   document.getElementById('v-month').textContent=MONTHS[now.getMonth()];
   document.getElementById('v-total').textContent=totalMonth;
-
   const dynamicCard=document.getElementById('dynamic-card');
-  const dynamicVal=document.getElementById('v-dynamic');
-  const dynamicLbl=document.getElementById('v-dynamic-lbl');
   const lmTop=getLastMonthTop();
   if(now.getDate()<=3&&lmTop){
-    dynamicVal.textContent=lmTop.label;
-    dynamicLbl.textContent=`${MONTHS[now.getMonth()===0?11:now.getMonth()-1]}'s #1`;
+    document.getElementById('v-dynamic').textContent=lmTop.label;
+    document.getElementById('v-dynamic-lbl').textContent=`${MONTHS[now.getMonth()===0?11:now.getMonth()-1]}'s #1`;
     dynamicCard.classList.add('last-month');
   } else {
-    const mc=getMostCommonCurrentMonth();
-    dynamicVal.textContent=mc?mc.label:'—';
-    dynamicLbl.textContent='Most common';
+    const mc=getMostCommon();
+    document.getElementById('v-dynamic').textContent=mc?mc.label:'—';
+    document.getElementById('v-dynamic-lbl').textContent='Most common';
     dynamicCard.classList.remove('last-month');
   }
-
   const sorted=Object.entries(countsMonth).sort((a,b)=>b[1]-a[1]);
   const max=sorted[0]?sorted[0][1]:1;
   document.getElementById('bars').innerHTML='<div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;gap:4px;">'+sorted.map(([id,c])=>{
@@ -202,25 +187,14 @@ function render(){
     return`<div class="bar-row"><span class="bar-name">${m.label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-cnt">${c}</span></div>`;
   }).join('')+'</div>';
 }
-
-// Settings
+function showResetConfirm(){document.getElementById('reset-confirm').classList.add('show');document.getElementById('reset-btn').style.display='none';}
+function hideResetConfirm(){document.getElementById('reset-confirm').classList.remove('show');document.getElementById('reset-btn').style.display='';}
 document.getElementById('settings-btn').onclick=(e)=>{e.stopPropagation();document.getElementById('settings-menu').classList.toggle('show');hideResetConfirm();};
 document.addEventListener('click',()=>{document.getElementById('settings-menu').classList.remove('show');hideResetConfirm();});
 document.getElementById('settings-menu').addEventListener('click',(e)=>e.stopPropagation());
-
-// Reset — inline, no browser popup
-function showResetConfirm(){
-  document.getElementById('reset-confirm').classList.add('show');
-  document.getElementById('reset-btn').style.display='none';
-}
-function hideResetConfirm(){
-  document.getElementById('reset-confirm').classList.remove('show');
-  document.getElementById('reset-btn').style.display='';
-}
 document.getElementById('reset-btn').onclick=(e)=>{e.stopPropagation();showResetConfirm();};
 document.getElementById('rc-cancel').onclick=(e)=>{e.stopPropagation();hideResetConfirm();};
 document.getElementById('rc-ok').onclick=(e)=>{e.stopPropagation();localStorage.removeItem(KEY);document.getElementById('settings-menu').classList.remove('show');hideResetConfirm();render();};
-
 render();
 </script>
 </body>
