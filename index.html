@@ -91,7 +91,7 @@ body { padding: 12px; }
       <div class="stat-card gold-card"><div class="stat-val" id="v-month">—</div><div class="stat-lbl">Current month</div></div>
       <div class="stat-card"><div class="stat-val" id="v-total">0</div><div class="stat-lbl">This month</div></div>
       <div class="stat-card"><div class="stat-val" id="v-avg">—</div><div class="stat-lbl">Daily avg</div></div>
-      <div class="stat-card" id="dynamic-card"><div class="stat-val sm" id="v-dynamic">—</div><div class="stat-lbl" id="v-dynamic-lbl">Most common</div></div>
+      <div class="stat-card"><div class="stat-val sm" id="v-dynamic">—</div><div class="stat-lbl" id="v-dynamic-lbl">Most common</div></div>
       <div class="settings-wrap">
         <button class="settings-btn" id="settings-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -128,9 +128,8 @@ function getTopMistake(counts){
   if(!sorted[0]||sorted[0][1]===0)return null;
   const topScore=sorted[0][1];
   const tied=sorted.filter(([,c])=>c===topScore);
-  if(tied.length===1)return{label:MISTAKES.find(m=>m.id===tied[0][0])?.label||tied[0][0],tied:false};
-  if(tied.length===2){const a=MISTAKES.find(m=>m.id===tied[0][0])?.label||tied[0][0];const b=MISTAKES.find(m=>m.id===tied[1][0])?.label||tied[1][0];return{label:`${a} & ${b}`,tied:true};}
-  return{label:`${tied.length} tied`,tied:true};
+  const names=tied.map(([id])=>MISTAKES.find(m=>m.id===id)?.label||id);
+  return{label:names.join(' & '),tied:tied.length>1};
 }
 function getDaysWithData(entries){return new Set(entries.map(e=>e.date)).size;}
 function render(){
@@ -163,8 +162,8 @@ function render(){
   const dynVal=document.getElementById('v-dynamic'),dynLbl=document.getElementById('v-dynamic-lbl');
   const lm=curMonth===0?11:curMonth-1,ly=curMonth===0?curYear-1:curYear;
   const lmTop=getTopMistake(countByMistake(getMonthData(lm,ly)));
-  if(now.getDate()<=3&&lmTop){dynVal.textContent=lmTop.label;dynLbl.textContent=lmTop.tied?`${MONTHS[lm]}'s top (tied)`:`${MONTHS[lm]}'s #1`;dynVal.classList.add('gold');}
-  else{const mc=getTopMistake(countsMonth);dynVal.textContent=mc?mc.label:'—';dynLbl.textContent=mc?.tied?'Most common (tied)':'Most common';dynVal.classList.remove('gold');}
+  if(now.getDate()<=3&&lmTop){dynVal.textContent=lmTop.label;dynLbl.textContent=`${MONTHS[lm]}'s #1`;dynVal.classList.add('gold');}
+  else{const mc=getTopMistake(countsMonth);dynVal.textContent=mc?mc.label:'—';dynLbl.textContent='Most common';dynVal.classList.remove('gold');}
   const sorted=Object.entries(countsMonth).sort((a,b)=>b[1]-a[1]);
   const max=sorted[0]?sorted[0][1]:0;
   const barsEl=document.getElementById('bars');
