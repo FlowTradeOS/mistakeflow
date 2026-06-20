@@ -27,7 +27,7 @@ body { padding: 12px; }
 .mistake-btn.has-count { border-color: var(--gold-border); }
 .counter-row { height: 18px; display: flex; align-items: center; justify-content: center; gap: 3px; }
 .counter-num { font-size: 10px; font-weight: 700; color: var(--gold); line-height: 1; }
-.counter-x { width: 14px; height: 14px; border-radius: 50%; border: none; background: var(--gold-bg); color: var(--gold); font-size: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s; }
+.counter-x { width: 14px; height: 14px; border-radius: 50%; border: none; background: var(--gold-bg); color: var(--gold); font-size: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.15s; line-height: 1; }
 .counter-x:hover { background: rgba(245,166,35,0.25); }
 .col-mid { flex: 1; background: var(--surface); border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--muted); font-size: 11px; text-align: center; opacity: 0.6; }
@@ -88,22 +88,10 @@ body { padding: 12px; }
     </div>
     <div class="col-mid" id="bars"></div>
     <div class="col-right">
-      <div class="stat-card gold-card">
-        <div class="stat-val" id="v-month">—</div>
-        <div class="stat-lbl">Current month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="v-total">0</div>
-        <div class="stat-lbl">This month</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val" id="v-avg">—</div>
-        <div class="stat-lbl">Daily avg</div>
-      </div>
-      <div class="stat-card" id="dynamic-card">
-        <div class="stat-val sm" id="v-dynamic">—</div>
-        <div class="stat-lbl" id="v-dynamic-lbl">Most common</div>
-      </div>
+      <div class="stat-card gold-card"><div class="stat-val" id="v-month">—</div><div class="stat-lbl">Current month</div></div>
+      <div class="stat-card"><div class="stat-val" id="v-total">0</div><div class="stat-lbl">This month</div></div>
+      <div class="stat-card"><div class="stat-val" id="v-avg">—</div><div class="stat-lbl">Daily avg</div></div>
+      <div class="stat-card" id="dynamic-card"><div class="stat-val sm" id="v-dynamic">—</div><div class="stat-lbl" id="v-dynamic-lbl">Most common</div></div>
       <div class="settings-wrap">
         <button class="settings-btn" id="settings-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -116,10 +104,7 @@ body { padding: 12px; }
           </button>
           <div class="reset-confirm" id="reset-confirm">
             <p>Are you sure? This cannot be undone.</p>
-            <div class="rc-btns">
-              <button class="rc-cancel" id="rc-cancel">Cancel</button>
-              <button class="rc-ok" id="rc-ok">Reset</button>
-            </div>
+            <div class="rc-btns"><button class="rc-cancel" id="rc-cancel">Cancel</button><button class="rc-ok" id="rc-ok">Reset</button></div>
           </div>
         </div>
       </div>
@@ -128,30 +113,36 @@ body { padding: 12px; }
 </div>
 <script>
 const MISTAKES=[{id:'no_plan',label:'No plan'},{id:'revenge_trade',label:'Revenge'},{id:'overtrading',label:'Overtrading'},{id:'moved_sl',label:'Moved SL'},{id:'oversize',label:'Oversize'},{id:'fomo',label:'FOMO'},{id:'early_exit',label:'Early exit'},{id:'late_entry',label:'Late entry'}];
-const KEY='ft_mistakes_final';
-const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const now=new Date();
-const today=now.toISOString().split('T')[0];
-const validIds=new Set(MISTAKES.map(m=>m.id));
+const KEY='ft_mistakes_final',MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const now=new Date(),today=now.toISOString().split('T')[0],validIds=new Set(MISTAKES.map(m=>m.id));
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch{return[];}}
 function save(d){try{localStorage.setItem(KEY,JSON.stringify(d));}catch{}}
 function sanitize(data){return data.map(e=>({...e,mistakes:e.mistakes.filter(id=>validIds.has(id))})).filter(e=>e.mistakes.length>0);}
+function getTodayEntry(){return load().find(x=>x.date===today);}
 function addMistake(id){const data=load();const e=data.find(x=>x.date===today);if(e)e.mistakes.push(id);else data.push({date:today,mistakes:[id]});save(data);}
 function removeMistake(id){const data=load();const e=data.find(x=>x.date===today);if(!e)return;const idx=e.mistakes.lastIndexOf(id);if(idx>-1)e.mistakes.splice(idx,1);if(!e.mistakes.length)data.splice(data.indexOf(e),1);save(data);}
 function getMonthData(month,year){return sanitize(load()).filter(e=>{const d=new Date(e.date);return d.getMonth()===month&&d.getFullYear()===year;});}
 function countByMistake(entries){const counts={};MISTAKES.forEach(m=>counts[m.id]=0);entries.forEach(e=>e.mistakes.forEach(id=>{counts[id]=(counts[id]||0)+1;}));return counts;}
-function getTopMistake(counts){const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);return sorted[0]&&sorted[0][1]>0?MISTAKES.find(m=>m.id===sorted[0][0])||null:null;}
+function getTopMistake(counts){
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  if(!sorted[0]||sorted[0][1]===0)return null;
+  const topScore=sorted[0][1];
+  const tied=sorted.filter(([,c])=>c===topScore);
+  if(tied.length===1)return{label:MISTAKES.find(m=>m.id===tied[0][0])?.label||tied[0][0],tied:false};
+  if(tied.length===2){const a=MISTAKES.find(m=>m.id===tied[0][0])?.label||tied[0][0];const b=MISTAKES.find(m=>m.id===tied[1][0])?.label||tied[1][0];return{label:`${a} & ${b}`,tied:true};}
+  return{label:`${tied.length} tied`,tied:true};
+}
+function getDaysWithData(entries){return new Set(entries.map(e=>e.date)).size;}
 function render(){
   const curMonth=now.getMonth(),curYear=now.getFullYear();
   const monthData=getMonthData(curMonth,curYear);
   const countsMonth=countByMistake(monthData);
-  const todayEntry=load().find(x=>x.date===today);
+  const todayEntry=getTodayEntry();
   const todayCounts={};MISTAKES.forEach(m=>todayCounts[m.id]=0);
   if(todayEntry)todayEntry.mistakes.forEach(id=>{todayCounts[id]=(todayCounts[id]||0)+1;});
   const todayTotal=todayEntry?todayEntry.mistakes.length:0;
   document.getElementById('today-total').textContent=todayTotal;
-  const pillsEl=document.getElementById('today-pills');
-  pillsEl.innerHTML='';
+  const pillsEl=document.getElementById('today-pills');pillsEl.innerHTML='';
   if(todayTotal===0){pillsEl.innerHTML='<span style="font-size:10px;color:var(--muted);opacity:0.6">No mistakes logged</span>';}
   else{MISTAKES.forEach(m=>{if(todayCounts[m.id]>0){const p=document.createElement('span');p.className='today-pill';p.textContent=`${m.label} ×${todayCounts[m.id]}`;pillsEl.appendChild(p);}});}
   const btnsEl=document.getElementById('btns');btnsEl.innerHTML='';
@@ -165,15 +156,15 @@ function render(){
     wrap.appendChild(btn);wrap.appendChild(cr);btnsEl.appendChild(wrap);
   });
   let totalMonth=0;monthData.forEach(e=>totalMonth+=e.mistakes.length);
-  const days=new Set(monthData.map(e=>e.date)).size;
+  const days=getDaysWithData(monthData);
   document.getElementById('v-month').textContent=MONTHS[curMonth];
   document.getElementById('v-total').textContent=totalMonth;
   document.getElementById('v-avg').textContent=days>0?(totalMonth/days).toFixed(1):'—';
+  const dynVal=document.getElementById('v-dynamic'),dynLbl=document.getElementById('v-dynamic-lbl');
   const lm=curMonth===0?11:curMonth-1,ly=curMonth===0?curYear-1:curYear;
   const lmTop=getTopMistake(countByMistake(getMonthData(lm,ly)));
-  const dynVal=document.getElementById('v-dynamic'),dynLbl=document.getElementById('v-dynamic-lbl');
-  if(now.getDate()<=3&&lmTop){dynVal.textContent=lmTop.label;dynLbl.textContent=`${MONTHS[lm]}'s #1`;dynVal.classList.add('gold');}
-  else{const mc=getTopMistake(countsMonth);dynVal.textContent=mc?mc.label:'—';dynLbl.textContent='Most common';dynVal.classList.remove('gold');}
+  if(now.getDate()<=3&&lmTop){dynVal.textContent=lmTop.label;dynLbl.textContent=lmTop.tied?`${MONTHS[lm]}'s top (tied)`:`${MONTHS[lm]}'s #1`;dynVal.classList.add('gold');}
+  else{const mc=getTopMistake(countsMonth);dynVal.textContent=mc?mc.label:'—';dynLbl.textContent=mc?.tied?'Most common (tied)':'Most common';dynVal.classList.remove('gold');}
   const sorted=Object.entries(countsMonth).sort((a,b)=>b[1]-a[1]);
   const max=sorted[0]?sorted[0][1]:0;
   const barsEl=document.getElementById('bars');
